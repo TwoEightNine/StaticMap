@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StaticMapView">
+        <attr name="latitude" format="float" />
+        <attr name="longitude" format="float" />
+        <attr name="pinIcon" format="integer" />
+    </declare-styleable>
+</resources>

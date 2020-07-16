@@ -14,6 +14,15 @@ import global.msnthrp.staticmap.utils.cropByOffset
 import global.msnthrp.staticmap.utils.getNeededTiles
 import java.lang.Exception
 
+/**
+ * converts [LatLng] into [TileQuadruple], loads tiles,
+ * caches them, creates map with centered [LatLng]
+ *
+ * @param tileLoader loads bitmap by tile url
+ * @param tileProvider converts [Tile] into tile url
+ * @param tileCacheSize how many tiles are cached
+ * @param mapCacheSize how many concatenated maps are cached
+ */
 internal class StaticMapLoader(
     private val tileLoader: TileLoader,
     private val tileProvider: TileProvider,
@@ -21,14 +30,30 @@ internal class StaticMapLoader(
     mapCacheSize: Int = tileCacheSize / 4
 ) {
 
+    /**
+     * used to send callbacks to ui thread
+     */
     private val handler = Handler(Looper.getMainLooper())
 
+    /**
+     * stores cached tiles
+     */
     private val tileCache = TileCache(tileCacheSize)
 
+    /**
+     * stores cached concatenated maps
+     */
     private val readyMapCache = TileCache(mapCacheSize)
 
+    /**
+     * list of running thread
+     */
     private val threads = arrayListOf<Thread>()
 
+    /**
+     * starts loading of static map by [latLng] and [zoom]
+     * @param callback callback to notify about finishing
+     */
     fun load(latLng: LatLng, zoom: Int, callback: Callback) {
         LoaderThread(latLng, zoom, callback)
             .apply {
@@ -37,14 +62,28 @@ internal class StaticMapLoader(
             }
     }
 
+    /**
+     * cancel all current jobs
+     */
     fun cancelAll() {
         threads.forEach { it.interrupt() }
     }
 
+    /**
+     * the way to notify about finishing of loading static map
+     */
     interface Callback {
 
+        /**
+         * static map is successfully loaded
+         * @param bitmap static map
+         */
         fun onMapLoaded(bitmap: Bitmap)
 
+        /**
+         * error occurred
+         * @param errorMessage a cause of error
+         */
         fun onMapFailed(errorMessage: String)
     }
 

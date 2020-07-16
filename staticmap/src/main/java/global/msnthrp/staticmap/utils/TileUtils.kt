@@ -6,6 +6,12 @@ import global.msnthrp.staticmap.model.Tile
 import global.msnthrp.staticmap.model.TileQuadruple
 import kotlin.math.*
 
+/**
+ * using latitude, longitude and zoom calculates 4 the most nearest tiles
+ * @param latLng coordinates of place
+ * @param zoom needed zoom
+ * @return object that contains 4 tiles and an offset of given place
+ */
 internal fun getNeededTiles(latLng: LatLng, zoom: Int): TileQuadruple {
     val (x, y) = getXY(latLng, zoom)
     val mainX = x.toInt()
@@ -59,6 +65,12 @@ internal fun getNeededTiles(latLng: LatLng, zoom: Int): TileQuadruple {
     }
 }
 
+/**
+ * converts zoom, latitude and longitude into x and y for tiling
+ * @param latLng coordinates of place
+ * @param zoom needed zoom
+ * @return pair of x and y, both float for calculating offsets
+ */
 private fun getXY(latLng: LatLng, zoom: Int): Coords {
     val zoomPower = 1 shl zoom
     val x = (latLng.longitude + 180) / 360 * zoomPower

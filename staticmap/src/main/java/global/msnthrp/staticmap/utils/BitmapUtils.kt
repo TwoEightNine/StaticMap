@@ -4,6 +4,19 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import global.msnthrp.staticmap.model.Coords
 
+/**
+ * concatenates 4 tiles into one large bitmap
+ *
+ * +------+------+
+ * |  top |  top |
+ * | left | right|
+ * |      |      |
+ * +------+------+
+ * |bottom|bottom|
+ * | left | right|
+ * |      |      |
+ * +------+------+
+ */
 internal fun combine4Tiles(topLeft: Bitmap, topRight: Bitmap, bottomLeft: Bitmap, bottomRight: Bitmap): Bitmap {
     val width = topLeft.width
     val height = topLeft.height
@@ -17,9 +30,16 @@ internal fun combine4Tiles(topLeft: Bitmap, topRight: Bitmap, bottomLeft: Bitmap
     return result
 }
 
-internal fun cropByOffset(bitmap: Bitmap, offset: Coords): Bitmap {
-    val xCenter = (offset.x * bitmap.width).toInt()
-    val yCenter = (offset.y * bitmap.height).toInt()
+/**
+ * crop [bitmap] according to absolute [point] to make [bitmap] 2 times smaller
+ * and obtain point at center
+ * @param bitmap what to crop
+ * @param point point in [0..1, 0..1], represents place on bitmap
+ * @return cropped bitmap with centered [point]
+ */
+internal fun cropByOffset(bitmap: Bitmap, point: Coords): Bitmap {
+    val xCenter = (point.x * bitmap.width).toInt()
+    val yCenter = (point.y * bitmap.height).toInt()
     return Bitmap.createBitmap(
         bitmap,
         xCenter - bitmap.width / 4,

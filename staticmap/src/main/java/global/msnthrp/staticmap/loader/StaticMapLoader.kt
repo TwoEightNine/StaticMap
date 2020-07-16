@@ -11,9 +11,10 @@ import global.msnthrp.staticmap.tile.TileLoader
 import global.msnthrp.staticmap.tile.TileProvider
 import global.msnthrp.staticmap.utils.combine4Tiles
 import global.msnthrp.staticmap.utils.cropByOffset
+import global.msnthrp.staticmap.utils.getNeededTiles
 import java.lang.Exception
 
-class StaticMapLoader(
+internal class StaticMapLoader(
     private val tileLoader: TileLoader,
     private val tileProvider: TileProvider,
     tileCacheSize: Int = 100,
@@ -56,7 +57,7 @@ class StaticMapLoader(
         override fun run() {
             super.run()
             try {
-                val tileQuadruple = LoaderCore.getNeededTiles(latLng, zoom)
+                val tileQuadruple = getNeededTiles(latLng, zoom)
 
                 val map = readyMapCache[tileQuadruple.topLeft] ?: createMap(tileQuadruple)
                 val cropped = cropByOffset(map, tileQuadruple.centerOffset)

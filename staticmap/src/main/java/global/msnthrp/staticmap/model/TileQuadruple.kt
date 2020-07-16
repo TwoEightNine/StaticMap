@@ -1,6 +1,6 @@
 package global.msnthrp.staticmap.model
 
-data class TileQuadruple(
+internal data class TileQuadruple(
 
     val topLeft: Tile,
 

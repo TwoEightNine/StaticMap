@@ -2,36 +2,72 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
+    <View
+        android:id="@+id/vCenter"
+        android:layout_centerHorizontal="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/etLatitude"
         android:layout_margin="16dp"
         android:inputType="numberDecimal"
+        android:layout_toLeftOf="@+id/vCenter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="latitude"
+        android:text="56.058"
+        android:layout_toStartOf="@+id/vCenter" />
 
     <EditText
         android:id="@+id/etLongitude"
         android:layout_margin="16dp"
-        android:layout_below="@+id/etLatitude"
+        android:layout_alignLeft="@+id/vCenter"
         android:inputType="numberDecimal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="longitude"
+        android:text="12.698"
+        android:layout_alignStart="@+id/vCenter" />
 
     <Button
         android:id="@+id/btnLoad"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/etLongitude"
         android:layout_width="wrap_content"
+        android:text="update"
         android:layout_height="wrap_content" />
 
-    <ImageView
-        android:id="@+id/ivTest"
+    <global.msnthrp.staticmap.view.StaticMapView
+        android:id="@+id/staticMap"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/btnLoad"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        app:pinIcon="@drawable/ic_pin"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
         android:layout_margin="16dp" />
+
+    <Button
+        android:id="@+id/btnZoomOut"
+        android:layout_margin="16dp"
+        android:layout_toLeftOf="@+id/vCenter"
+        android:layout_below="@+id/staticMap"
+        android:layout_width="wrap_content"
+        android:text="zoom out (-)"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/vCenter" />
+
+    <Button
+        android:id="@+id/btnZoomIn"
+        android:layout_margin="16dp"
+        android:layout_alignLeft="@+id/vCenter"
+        android:layout_below="@+id/staticMap"
+        android:layout_width="wrap_content"
+        android:text="zoom in (+)"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/vCenter" />
 
 </RelativeLayout>

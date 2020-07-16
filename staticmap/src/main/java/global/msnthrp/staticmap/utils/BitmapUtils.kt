@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import global.msnthrp.staticmap.model.Coords
 
-fun combine4Tiles(topLeft: Bitmap, topRight: Bitmap, bottomLeft: Bitmap, bottomRight: Bitmap): Bitmap {
+internal fun combine4Tiles(topLeft: Bitmap, topRight: Bitmap, bottomLeft: Bitmap, bottomRight: Bitmap): Bitmap {
     val width = topLeft.width
     val height = topLeft.height
     val result = Bitmap.createBitmap(width * 2, height * 2, Bitmap.Config.ARGB_8888)
@@ -17,7 +17,7 @@ fun combine4Tiles(topLeft: Bitmap, topRight: Bitmap, bottomLeft: Bitmap, bottomR
     return result
 }
 
-fun cropByOffset(bitmap: Bitmap, offset: Coords): Bitmap {
+internal fun cropByOffset(bitmap: Bitmap, offset: Coords): Bitmap {
     val xCenter = (offset.x * bitmap.width).toInt()
     val yCenter = (offset.y * bitmap.height).toInt()
     return Bitmap.createBitmap(

@@ -1,6 +1,6 @@
 package global.msnthrp.staticmap.model
 
-data class Coords(
+internal data class Coords(
 
     val x: Double,
 

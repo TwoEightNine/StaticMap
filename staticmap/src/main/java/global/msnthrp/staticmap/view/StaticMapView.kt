@@ -1,13 +1,17 @@
 package global.msnthrp.staticmap.view
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import global.msnthrp.staticmap.R
+import global.msnthrp.staticmap.loader.StaticMapLoader
 import global.msnthrp.staticmap.model.LatLng
+import global.msnthrp.staticmap.tile.TileLoader
+import global.msnthrp.staticmap.tile.TileProvider
 
 class StaticMapView @JvmOverloads constructor(
     context: Context,
@@ -15,34 +19,104 @@ class StaticMapView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : AppCompatImageView(context, attributeSet, defStyleAttr) {
 
-    private val pinIcon: Drawable?
+    var pinIcon: Drawable? = null
+        set(value) {
+            field = value
+            invalidate()
+        }
 
-    private var latitude: Double
-    private var longitude: Double
+    var latLng: LatLng? = null
+        set(value) {
+            field = value
+            tryLoadMap()
+        }
+
+    var zoom: Int = ZOOM_DEFAULT
+        set(value) {
+            if (value in ZOOM_MIN..ZOOM_MAX) {
+                field = value
+                tryLoadMap()
+            }
+        }
+
+    private var loader: StaticMapLoader? = null
+
+    private var widthInternal = 0
+    private var heightInternal = 0
 
     init {
-        val attrsArray = intArrayOf(
-            R.attr.latitude,
-            R.attr.longitude,
-            R.attr.pinIcon
-        )
-        context.obtainStyledAttributes(attributeSet, attrsArray).apply {
-            latitude = getFloat(R.styleable.StaticMapView_latitude, 0f).toDouble()
-            longitude = getFloat(R.styleable.StaticMapView_longitude, 0f).toDouble()
-            pinIcon = getDrawable(R.styleable.StaticMapView_pinIcon)
-                ?: ContextCompat.getDrawable(context, R.drawable.ic_default_pin)
-            recycle()
+        scaleType = ScaleType.CENTER_CROP
+        context.theme.obtainStyledAttributes(
+            attributeSet,
+            R.styleable.StaticMapView,
+            0, 0).apply {
+
+            try {
+                pinIcon = getDrawable(R.styleable.StaticMapView_pinIcon)
+            } finally {
+                recycle()
+            }
         }
     }
 
-    fun setLatLng(latLng: LatLng) {
-        latitude = latLng.latitude
-        longitude = latLng.longitude
-        invalidate()
+    fun setConfig(config: Config) {
+        loader = StaticMapLoader(
+            config.tileLoader,
+            config.tileProvider,
+            config.tileCacheSize,
+            config.mapCacheSize
+        )
+        tryLoadMap()
+    }
+
+    fun zoomIn() {
+        zoom++
+    }
+
+    fun zoomOut() {
+        zoom--
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        widthInternal = w
+        heightInternal = h
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        latLng ?: return
 
+        pinIcon?.toBitmap()?.also { pin ->
+            canvas?.drawBitmap(pin, (widthInternal - pin.width) / 2f, heightInternal / 2f - pin.height, null)
+        }
+    }
+
+    private fun tryLoadMap() {
+        loader?.cancelAll()
+        loader?.load(latLng ?: return, zoom, OnMapLoaded())
+    }
+
+    companion object {
+
+        const val ZOOM_MIN = 0
+        const val ZOOM_DEFAULT = 16
+        const val ZOOM_MAX = 22
+    }
+
+    data class Config(
+        val tileProvider: TileProvider,
+        val tileLoader: TileLoader,
+        val tileCacheSize: Int = 100,
+        val mapCacheSize: Int = tileCacheSize / 4
+    )
+
+    private inner class OnMapLoaded : StaticMapLoader.Callback {
+        override fun onMapLoaded(bitmap: Bitmap) {
+            setImageBitmap(bitmap)
+        }
+
+        override fun onMapFailed(errorMessage: String) {
+        }
     }
 }

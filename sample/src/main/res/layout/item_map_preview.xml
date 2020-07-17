@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_margin="8dp"
+        android:layout_toStartOf="@+id/staticMapPreview"
+        android:layout_toLeftOf="@+id/staticMapPreview"
+        android:layout_width="match_parent"
+        android:text="map preview sample map preview sample"
+        android:textSize="16sp"
+        android:textColor="#333"
+        android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:layout_alignTop="@+id/staticMapPreview"
+        android:layout_alignStart="@+id/staticMapPreview"
+        android:layout_alignLeft="@+id/staticMapPreview"
+        android:layout_alignEnd="@+id/staticMapPreview"
+        android:layout_alignRight="@+id/staticMapPreview"
+        android:layout_alignBottom="@+id/staticMapPreview"
+        android:padding="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <global.msnthrp.staticmap.view.StaticMapView
+        android:id="@+id/staticMapPreview"
+        android:layout_width="226dp"
+        android:layout_height="160dp"
+        app:cornerRadius="8dp"
+        app:pinIcon="@drawable/ic_pin"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="8dp" />
+
+
+</RelativeLayout>

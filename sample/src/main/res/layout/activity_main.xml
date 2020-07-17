@@ -5,90 +5,108 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/vCenter"
-        android:layout_centerHorizontal="true"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/etLatitude"
-        android:layout_margin="16dp"
-        android:inputType="numberDecimal"
-        android:layout_toLeftOf="@+id/vCenter"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="latitude"
-        android:text="56.058"
-        android:layout_toStartOf="@+id/vCenter" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etLongitude"
-        android:layout_margin="16dp"
-        android:layout_alignLeft="@+id/vCenter"
-        android:inputType="numberDecimal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="longitude"
-        android:text="12.698"
-        android:layout_alignStart="@+id/vCenter" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/btnLoad"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/etLongitude"
-        android:layout_width="wrap_content"
-        android:text="update"
-        android:layout_height="wrap_content" />
+            <View
+                android:id="@+id/vCenter"
+                android:layout_centerHorizontal="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
 
-    <global.msnthrp.staticmap.view.StaticMapView
-        android:id="@+id/staticMap"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/btnLoad"
-        app:pinIcon="@drawable/ic_pin"
-        app:cornerRadius="12dp"
-        android:layout_width="256dp"
-        android:layout_height="296dp"
-        android:layout_margin="16dp" />
+            <EditText
+                android:id="@+id/etLatitude"
+                android:layout_margin="16dp"
+                android:inputType="numberDecimal"
+                android:layout_toLeftOf="@+id/vCenter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="latitude"
+                android:text="56.058"
+                android:layout_toStartOf="@+id/vCenter" />
 
-    <RelativeLayout
-        android:id="@+id/rlLoader"
-        android:layout_alignTop="@+id/staticMap"
-        android:layout_alignBottom="@+id/staticMap"
-        android:layout_alignLeft="@+id/staticMap"
-        android:layout_alignStart="@+id/staticMap"
-        android:layout_alignRight="@+id/staticMap"
-        android:layout_alignEnd="@+id/staticMap"
-        android:background="#8fff"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+            <EditText
+                android:id="@+id/etLongitude"
+                android:layout_margin="16dp"
+                android:layout_alignLeft="@+id/vCenter"
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="longitude"
+                android:text="12.698"
+                android:layout_alignStart="@+id/vCenter" />
 
-        <ProgressBar
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/btnLoad"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/etLongitude"
+                android:layout_width="wrap_content"
+                android:text="update"
+                android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+            <global.msnthrp.staticmap.view.StaticMapView
+                android:id="@+id/staticMap"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/btnLoad"
+                app:pinIcon="@drawable/ic_pin"
+                app:cornerRadius="12dp"
+                android:layout_width="256dp"
+                android:layout_height="296dp"
+                android:layout_margin="16dp" />
 
-    <Button
-        android:id="@+id/btnZoomOut"
-        android:layout_margin="16dp"
-        android:layout_toLeftOf="@+id/vCenter"
-        android:layout_below="@+id/staticMap"
-        android:layout_width="wrap_content"
-        android:text="zoom out (-)"
-        android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/vCenter" />
+            <RelativeLayout
+                android:id="@+id/rlLoader"
+                android:layout_alignTop="@+id/staticMap"
+                android:layout_alignBottom="@+id/staticMap"
+                android:layout_alignLeft="@+id/staticMap"
+                android:layout_alignStart="@+id/staticMap"
+                android:layout_alignRight="@+id/staticMap"
+                android:layout_alignEnd="@+id/staticMap"
+                android:background="#8fff"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
-    <Button
-        android:id="@+id/btnZoomIn"
-        android:layout_margin="16dp"
-        android:layout_alignLeft="@+id/vCenter"
-        android:layout_below="@+id/staticMap"
-        android:layout_width="wrap_content"
-        android:text="zoom in (+)"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/vCenter" />
+                <ProgressBar
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btnZoomOut"
+                android:layout_margin="16dp"
+                android:layout_toLeftOf="@+id/vCenter"
+                android:layout_below="@+id/staticMap"
+                android:layout_width="wrap_content"
+                android:text="zoom out (-)"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/vCenter" />
+
+            <Button
+                android:id="@+id/btnZoomIn"
+                android:layout_margin="16dp"
+                android:layout_alignLeft="@+id/vCenter"
+                android:layout_below="@+id/staticMap"
+                android:layout_width="wrap_content"
+                android:text="zoom in (+)"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/vCenter" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMaps"
+                android:layout_below="@+id/btnZoomOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

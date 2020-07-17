@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import global.msnthrp.staticmap.model.LatLng
@@ -14,6 +15,8 @@ import global.msnthrp.staticmap.tile.TileLoader
 import global.msnthrp.staticmap.tile.TileProvider
 import global.msnthrp.staticmap.view.StaticMapView
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,11 +24,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        staticMap.viewState = StaticMapViewState()
-        staticMap.setConfig(StaticMapView.Config(
+        val mapConfig = StaticMapView.Config(
             CustomTileProvider(),
             CustomTileLoader()
-        ))
+        )
+
+        staticMap.viewState = StaticMapViewState()
+        staticMap.setConfig(mapConfig)
+
+        val adapter = MapPreviewAdapter(this, mapConfig)
+        rvMaps.layoutManager = LinearLayoutManager(this)
+        rvMaps.adapter = adapter
+        adapter.addAll(createPoints())
 
         btnLoad.setOnClickListener {
             staticMap.latLng = LatLng(
@@ -38,6 +48,18 @@ class MainActivity : AppCompatActivity() {
         }
         btnZoomOut.setOnClickListener {
             staticMap.zoomOut()
+        }
+        btnLoad.callOnClick()
+    }
+
+    private fun createPoints() = arrayListOf<LatLng>().apply {
+        for (i in 1..100) {
+            add(
+                LatLng(
+                    Random.nextDouble(45.7, 53.0),
+                    Random.nextDouble(4.9, 29.0)
+                )
+            )
         }
     }
 

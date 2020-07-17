@@ -3,6 +3,7 @@ package global.msnthrp.staticmap.loader
 import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import global.msnthrp.staticmap.model.LatLng
 import global.msnthrp.staticmap.model.Tile
 import global.msnthrp.staticmap.model.TileQuadruple
@@ -69,6 +70,19 @@ internal class StaticMapLoader(
         threads.forEach { it.interrupt() }
     }
 
+    private fun log(s: String, t: Throwable? = null) {
+        if (t == null) {
+            Log.i(TAG, s)
+        } else {
+            Log.wtf(TAG, s)
+            t.printStackTrace()
+        }
+    }
+
+    companion object {
+        const val TAG = "StaticMap"
+    }
+
     /**
      * the way to notify about finishing of loading static map
      */
@@ -96,18 +110,22 @@ internal class StaticMapLoader(
         override fun run() {
             super.run()
             try {
+                val start = System.currentTimeMillis()
                 val tileQuadruple = getNeededTiles(latLng, zoom)
 
                 val map = readyMapCache[tileQuadruple.topLeft] ?: createMap(tileQuadruple)
                 val cropped = cropByOffset(map, tileQuadruple.centerOffset)
                 handler.post {
+                    log("loaded for ${System.currentTimeMillis() - start} ms")
                     callback.onMapLoaded(cropped)
                 }
             } catch (e: InterruptedException) {
-                e.printStackTrace()
+                log("cancelled")
             } catch (e: Exception) {
-                e.printStackTrace()
-                callback.onMapFailed(e.message.toString())
+                log("map loading failed", e)
+                handler.post {
+                    callback.onMapFailed(e.message.toString())
+                }
             }
         }
 
@@ -148,6 +166,13 @@ internal class StaticMapLoader(
                         override fun onLoaded(tileBitmap: Bitmap) {
                             tileCache.put(tile, tileBitmap)
                             onReady(tileBitmap)
+                        }
+
+                        override fun onFailed(e: Exception) {
+                            handler.post {
+                                log("tile loading failed", e)
+                                callback.onMapFailed(e.message.toString())
+                            }
                         }
                     })
             } else {

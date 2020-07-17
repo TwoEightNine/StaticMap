@@ -1,7 +1,9 @@
 package global.msnthrp.staticmap.sample
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -19,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        staticMap.viewState = StaticMapViewState()
         staticMap.setConfig(StaticMapView.Config(
             CustomTileProvider(),
             CustomTileLoader()
@@ -38,6 +41,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private inner class StaticMapViewState : StaticMapView.ViewState {
+        override fun onLoadingStateChanged(isLoading: Boolean) {
+            rlLoader.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        override fun onErrorOccurred(errorMessage: String) {
+            AlertDialog.Builder(this@MainActivity)
+                .setTitle("static map error")
+                .setMessage(errorMessage)
+                .setPositiveButton("ok", null)
+                .show()
+        }
+    }
+
     private inner class CustomTileLoader : TileLoader {
         override fun loadTile(tileUrl: String, callback: TileLoader.Callback) {
             try {
@@ -48,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                     .get()
                 callback.onLoaded(bitmap)
             } catch (e: Exception) {
-                e.printStackTrace()
+                callback.onFailed(e)
             }
         }
     }

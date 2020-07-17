@@ -48,8 +48,28 @@
         app:pinIcon="@drawable/ic_pin"
         app:cornerRadius="12dp"
         android:layout_width="256dp"
-        android:layout_height="256dp"
+        android:layout_height="296dp"
         android:layout_margin="16dp" />
+
+    <RelativeLayout
+        android:id="@+id/rlLoader"
+        android:layout_alignTop="@+id/staticMap"
+        android:layout_alignBottom="@+id/staticMap"
+        android:layout_alignLeft="@+id/staticMap"
+        android:layout_alignStart="@+id/staticMap"
+        android:layout_alignRight="@+id/staticMap"
+        android:layout_alignEnd="@+id/staticMap"
+        android:background="#8fff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btnZoomOut"

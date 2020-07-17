@@ -1,6 +1,5 @@
 package global.msnthrp.staticmap.view
 
-import android.R.attr.radius
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -53,6 +52,11 @@ class StaticMapView @JvmOverloads constructor(
                 tryLoadMap()
             }
         }
+
+    /**
+     * callback to handle the state of [StaticMapView]
+     */
+    var viewState: ViewState? = null
 
     /**
      * tile and map loader
@@ -150,6 +154,7 @@ class StaticMapView @JvmOverloads constructor(
     private fun tryLoadMap() {
         loader?.cancelAll()
         loader?.load(latLng ?: return, zoom, OnMapLoaded())
+        viewState?.onLoadingStateChanged(true)
     }
 
     companion object {
@@ -174,12 +179,33 @@ class StaticMapView @JvmOverloads constructor(
         val mapCacheSize: Int = tileCacheSize / 4
     )
 
+    /**
+     * interface to provide a callback about view state
+     */
+    interface ViewState {
+
+        /**
+         * invoked when loading state has changed
+         * @param isLoading if static map is being loaded
+         */
+        fun onLoadingStateChanged(isLoading: Boolean)
+
+        /**
+         * invoked when error occurs
+         * @param errorMessage a cause of error
+         */
+        fun onErrorOccurred(errorMessage: String)
+    }
+
     private inner class OnMapLoaded : StaticMapLoader.Callback {
         override fun onMapLoaded(bitmap: Bitmap) {
             setImageBitmap(bitmap)
+            viewState?.onLoadingStateChanged(false)
         }
 
         override fun onMapFailed(errorMessage: String) {
+            viewState?.onLoadingStateChanged(false)
+            viewState?.onErrorOccurred(errorMessage)
         }
     }
 }

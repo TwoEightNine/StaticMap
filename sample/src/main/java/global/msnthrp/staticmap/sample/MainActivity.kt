@@ -1,19 +1,18 @@
 package global.msnthrp.staticmap.sample
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
-import global.msnthrp.staticmap.StaticMap
+import global.msnthrp.staticmap.core.StaticMap
 import global.msnthrp.staticmap.model.LatLngZoom
 import global.msnthrp.staticmap.model.Tile
 import global.msnthrp.staticmap.tile.TileEssential
 import global.msnthrp.staticmap.tile.TileLoader
 import global.msnthrp.staticmap.tile.TileProvider
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val tileEssential = TileEssential(CustomTileProvider(), CustomTileLoader())
+        val pinIcon = ContextCompat.getDrawable(this, R.drawable.ic_pin)
         var latLngZoom = LatLngZoom(0.0, 0.0, 16)
 
         btnLoad.setOnClickListener {
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             )
             StaticMap.with(tileEssential)
                 .load(latLngZoom)
-                .pin(ContextCompat.getDrawable(this, R.drawable.ic_pin))
+                .pin(if (cbWithPin.isChecked) pinIcon else null)
                 .into(ivStaticMap)
         }
         btnZoomIn.setOnClickListener {
@@ -42,25 +42,13 @@ class MainActivity : AppCompatActivity() {
             latLngZoom = latLngZoom.copy(zoom = latLngZoom.zoom - 1)
             btnLoad.callOnClick()
         }
-        btnLoad.callOnClick()
-
-        val adapter = MapPreviewAdapter(this, StaticMap.with(tileEssential))
-        rvMaps.layoutManager = LinearLayoutManager(this)
-        rvMaps.adapter = adapter
-        adapter.addAll(createPoints())
-
-    }
-
-    private fun createPoints() = arrayListOf<LatLngZoom>().apply {
-        for (i in 1..100) {
-            add(
-                LatLngZoom(
-                    latitude = Random.nextDouble(45.7, 53.0),
-                    longitude = Random.nextDouble(4.9, 29.0),
-                    zoom = 14
-                )
-            )
+        cbWithPin.setOnCheckedChangeListener { _, _ ->
+            btnLoad.callOnClick()
         }
+        btnList.setOnClickListener {
+            startActivity(Intent(this, MapListActivity::class.java))
+        }
+        btnLoad.callOnClick()
     }
 
     private inner class CustomTileLoader : TileLoader {

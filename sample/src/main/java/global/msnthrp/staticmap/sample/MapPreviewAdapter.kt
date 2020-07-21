@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import global.msnthrp.staticmap.StaticMap
+import global.msnthrp.staticmap.core.StaticMap
 import global.msnthrp.staticmap.model.LatLngZoom
+import global.msnthrp.staticmap.tile.TileEssential
 import kotlinx.android.synthetic.main.item_map_preview.view.*
 
 class MapPreviewAdapter(
     context: Context,
-    private val staticMap: StaticMap
+    private val tileEssential: TileEssential
 ) : RecyclerView.Adapter<MapPreviewAdapter.MapPreviewViewHolder>() {
 
     private val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)
@@ -39,7 +40,7 @@ class MapPreviewAdapter(
 
         fun bind(latLng: LatLngZoom) {
             with(itemView) {
-                staticMap
+                StaticMap.with(tileEssential)
                     .load(latLng)
                     .into(ivStaticMapPreview)
             }

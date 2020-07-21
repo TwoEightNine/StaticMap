@@ -2,6 +2,7 @@ package global.msnthrp.staticmap.loader
 
 import android.graphics.drawable.Drawable
 import android.util.Log
+import global.msnthrp.staticmap.core.StaticMap
 import global.msnthrp.staticmap.model.LatLngZoom
 import global.msnthrp.staticmap.model.TileQuadruple
 import global.msnthrp.staticmap.tile.TileCache
@@ -18,12 +19,12 @@ internal object StaticMapLoader {
     /**
      * stores cached tiles
      */
-    internal val tileCache = TileCache(100)
+    internal val tileCache = TileCache(StaticMap.tileCacheSize)
 
     /**
      * stores cached concatenated maps
      */
-    internal val readyMapCache = TileCache(25)
+    internal val readyMapCache = TileCache(StaticMap.mapCacheSize)
 
     /**
      * list of running thread
@@ -31,7 +32,15 @@ internal object StaticMapLoader {
     private val threads = arrayListOf<Thread>()
 
     /**
+     * list of queued threads
+     */
+    private val threadQueue = arrayListOf<Thread>()
+
+    /**
      * starts loading of static map by [latLngZoom]
+     * @param tileEssential essential part of StaticMap, contains loader and provider
+     * @param latLngZoom represents exact point of map
+     * @param pinIcon pin to draw over bitmap
      * @param callback callback to notify about finishing
      */
     fun load(
@@ -42,8 +51,12 @@ internal object StaticMapLoader {
     ) {
         LoaderThread(tileEssential, latLngZoom, pinIcon, callback)
             .apply {
-                threads.add(this)
-                start()
+                onThreadDone = { removeThread(this) }
+                if (threads.size < StaticMap.maxThreads) {
+                    startThread(this)
+                } else {
+                    threadQueue.add(this)
+                }
             }
     }
 
@@ -54,12 +67,39 @@ internal object StaticMapLoader {
         threads.forEach { it.interrupt() }
     }
 
-    internal fun log(s: String, t: Throwable? = null) {
-        if (t == null) {
-            Log.i(TAG, s)
+    /**
+     * starts thread and adds it to [threads]
+     */
+    private fun startThread(thread: Thread) {
+        threads.add(thread)
+        thread.start()
+    }
+
+    /**
+     * removes [thread] from [threads] list
+     * checks for next thread in [threadQueue]
+     */
+    private fun removeThread(thread: Thread) {
+        if (thread in threads) {
+            threads.remove(thread)
+        }
+        if (threadQueue.isNotEmpty()) {
+            val nextThread = threadQueue[0]
+            threadQueue.removeAt(0)
+            startThread(nextThread)
         } else {
-            Log.wtf(TAG, s)
-            t.printStackTrace()
+            log("Queue is empty")
+        }
+    }
+
+    internal fun log(s: String, t: Throwable? = null) {
+        if (StaticMap.verbose) {
+            if (t == null) {
+                Log.i(TAG, s)
+            } else {
+                Log.wtf(TAG, s)
+                t.printStackTrace()
+            }
         }
     }
 }

@@ -27,6 +27,11 @@ internal class LoaderThread(
      */
     private val handler = Handler(Looper.getMainLooper())
 
+    /**
+     * callback that is being invoked after the job is done
+     */
+    internal var onThreadDone: (() -> Unit)? = null
+
     override fun run() {
         super.run()
         try {
@@ -49,6 +54,8 @@ internal class LoaderThread(
             handler.post {
                 callback.onMapFailed(e.message.toString())
             }
+        } finally {
+            onThreadDone?.invoke()
         }
     }
 

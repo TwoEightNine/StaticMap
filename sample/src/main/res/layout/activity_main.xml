@@ -5,106 +5,112 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <androidx.core.widget.NestedScrollView
+
+    <View
+        android:id="@+id/vCenter"
+        android:layout_centerHorizontal="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/etLatitude"
+        android:layout_margin="16dp"
+        android:inputType="numberDecimal"
+        android:layout_toLeftOf="@+id/vCenter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:hint="latitude"
+        android:text="56.058"
+        android:layout_toStartOf="@+id/vCenter" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/etLongitude"
+        android:layout_margin="16dp"
+        android:layout_alignLeft="@+id/vCenter"
+        android:inputType="numberDecimal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="longitude"
+        android:text="12.698"
+        android:layout_alignStart="@+id/vCenter" />
 
-            <View
-                android:id="@+id/vCenter"
-                android:layout_centerHorizontal="true"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+    <CheckBox
+        android:id="@+id/cbWithPin"
+        android:layout_below="@+id/etLatitude"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:text="with pin"
+        android:layout_alignTop="@+id/btnLoad"
+        android:layout_alignBottom="@+id/btnLoad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-            <EditText
-                android:id="@+id/etLatitude"
-                android:layout_margin="16dp"
-                android:inputType="numberDecimal"
-                android:layout_toLeftOf="@+id/vCenter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="latitude"
-                android:text="56.058"
-                android:layout_toStartOf="@+id/vCenter" />
+    <Button
+        android:id="@+id/btnLoad"
+        android:layout_alignEnd="@+id/etLongitude"
+        android:layout_alignRight="@+id/etLongitude"
+        android:layout_below="@+id/etLongitude"
+        android:layout_width="wrap_content"
+        android:text="update"
+        android:layout_height="wrap_content" />
 
-            <EditText
-                android:id="@+id/etLongitude"
-                android:layout_margin="16dp"
-                android:layout_alignLeft="@+id/vCenter"
-                android:inputType="numberDecimal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="longitude"
-                android:text="12.698"
-                android:layout_alignStart="@+id/vCenter" />
+    <ImageView
+        android:id="@+id/ivStaticMap"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btnLoad"
+        android:layout_width="256dp"
+        android:layout_height="296dp"
+        android:layout_margin="16dp" />
 
-            <Button
-                android:id="@+id/btnLoad"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/etLongitude"
-                android:layout_width="wrap_content"
-                android:text="update"
-                android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:id="@+id/rlLoader"
+        android:layout_alignTop="@+id/ivStaticMap"
+        android:layout_alignBottom="@+id/ivStaticMap"
+        android:layout_alignLeft="@+id/ivStaticMap"
+        android:layout_alignStart="@+id/ivStaticMap"
+        android:layout_alignRight="@+id/ivStaticMap"
+        android:layout_alignEnd="@+id/ivStaticMap"
+        android:background="#8fff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/ivStaticMap"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/btnLoad"
-                android:layout_width="256dp"
-                android:layout_height="296dp"
-                android:layout_margin="16dp" />
+        <ProgressBar
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-            <RelativeLayout
-                android:id="@+id/rlLoader"
-                android:layout_alignTop="@+id/ivStaticMap"
-                android:layout_alignBottom="@+id/ivStaticMap"
-                android:layout_alignLeft="@+id/ivStaticMap"
-                android:layout_alignStart="@+id/ivStaticMap"
-                android:layout_alignRight="@+id/ivStaticMap"
-                android:layout_alignEnd="@+id/ivStaticMap"
-                android:background="#8fff"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone">
+    </RelativeLayout>
 
-                <ProgressBar
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnZoomOut"
+        android:layout_margin="16dp"
+        android:layout_toLeftOf="@+id/vCenter"
+        android:layout_below="@+id/ivStaticMap"
+        android:layout_width="wrap_content"
+        android:text="zoom out (-)"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/vCenter" />
 
-            </RelativeLayout>
+    <Button
+        android:id="@+id/btnZoomIn"
+        android:layout_margin="16dp"
+        android:layout_alignLeft="@+id/vCenter"
+        android:layout_below="@+id/ivStaticMap"
+        android:layout_width="wrap_content"
+        android:text="zoom in (+)"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/vCenter" />
 
-            <Button
-                android:id="@+id/btnZoomOut"
-                android:layout_margin="16dp"
-                android:layout_toLeftOf="@+id/vCenter"
-                android:layout_below="@+id/ivStaticMap"
-                android:layout_width="wrap_content"
-                android:text="zoom out (-)"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/vCenter" />
+    <Button
+        android:id="@+id/btnList"
+        android:layout_margin="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:text="open map list"
+        android:layout_height="wrap_content" />
 
-            <Button
-                android:id="@+id/btnZoomIn"
-                android:layout_margin="16dp"
-                android:layout_alignLeft="@+id/vCenter"
-                android:layout_below="@+id/ivStaticMap"
-                android:layout_width="wrap_content"
-                android:text="zoom in (+)"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/vCenter" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvMaps"
-                android:layout_below="@+id/btnZoomOut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </RelativeLayout>
-
-    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

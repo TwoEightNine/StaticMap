@@ -1,4 +1,4 @@
-package global.msnthrp.staticmap
+package global.msnthrp.staticmap.core
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -7,10 +7,10 @@ import global.msnthrp.staticmap.loader.StaticMapLoader
 import global.msnthrp.staticmap.loader.StaticMapLoaderCallback
 import global.msnthrp.staticmap.model.LatLngZoom
 import global.msnthrp.staticmap.tile.TileEssential
-import global.msnthrp.staticmap.tile.TileLoader
-import global.msnthrp.staticmap.tile.TileProvider
 
-class StaticMap(private val tileEssential: TileEssential) {
+class StaticMapRequest internal constructor(
+    private val tileEssential: TileEssential
+) {
 
     private var latLngZoom: LatLngZoom? = null
     private var pinIcon: Drawable? = null
@@ -32,6 +32,7 @@ class StaticMap(private val tileEssential: TileEssential) {
     }
 
     fun into(imageView: ImageView) {
+        imageView.setImageDrawable(null)
         into(object : StaticMapLoaderCallback {
             override fun onMapLoaded(bitmap: Bitmap) {
                 imageView.setImageBitmap(bitmap)
@@ -42,17 +43,4 @@ class StaticMap(private val tileEssential: TileEssential) {
             }
         })
     }
-
-    companion object {
-
-        fun with(tileEssential: TileEssential) =
-            StaticMap(tileEssential)
-
-        fun clearCache() {
-            StaticMapLoader.tileCache.evictAll()
-            StaticMapLoader.readyMapCache.evictAll()
-        }
-    }
-
-
 }

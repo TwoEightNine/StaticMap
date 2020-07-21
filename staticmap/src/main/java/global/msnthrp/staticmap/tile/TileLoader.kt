@@ -26,7 +26,7 @@ interface TileLoader {
         fun onLoaded(tileBitmap: Bitmap)
 
         /**
-         * should be invoked when error occured during loading
+         * should be invoked when error occurred during loading
          * @param e exception, a cause of error
          */
         fun onFailed(e: Exception)

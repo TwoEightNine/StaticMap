@@ -1,19 +1,18 @@
 package global.msnthrp.staticmap.utils
 
+import global.msnthrp.staticmap.model.*
 import global.msnthrp.staticmap.model.Coords
-import global.msnthrp.staticmap.model.LatLng
-import global.msnthrp.staticmap.model.Tile
 import global.msnthrp.staticmap.model.TileQuadruple
 import kotlin.math.*
 
 /**
  * using latitude, longitude and zoom calculates 4 the most nearest tiles
- * @param latLng coordinates of place
- * @param zoom needed zoom
+ * @param latLngZoom coordinates and zoom of place
  * @return object that contains 4 tiles and an offset of given place
  */
-internal fun getNeededTiles(latLng: LatLng, zoom: Int): TileQuadruple {
-    val (x, y) = getXY(latLng, zoom)
+internal fun getNeededTiles(latLngZoom: LatLngZoom): TileQuadruple {
+    val (x, y) = getXY(latLngZoom)
+    val zoom = latLngZoom.zoom
     val mainX = x.toInt()
     val mainY = y.toInt()
 
@@ -67,15 +66,14 @@ internal fun getNeededTiles(latLng: LatLng, zoom: Int): TileQuadruple {
 
 /**
  * converts zoom, latitude and longitude into x and y for tiling
- * @param latLng coordinates of place
- * @param zoom needed zoom
+ * @param latLngZoom coordinates and zoom of place
  * @return pair of x and y, both float for calculating offsets
  */
-private fun getXY(latLng: LatLng, zoom: Int): Coords {
-    val zoomPower = 1 shl zoom
-    val x = (latLng.longitude + 180) / 360 * zoomPower
-    val latTan = tan(latLng.latitude.toRadian())
-    val latInvCos = 1 / cos(latLng.latitude.toRadian())
+private fun getXY(latLngZoom: LatLngZoom): Coords {
+    val zoomPower = 1 shl latLngZoom.zoom
+    val x = (latLngZoom.longitude + 180) / 360 * zoomPower
+    val latTan = tan(latLngZoom.latitude.toRadian())
+    val latInvCos = 1 / cos(latLngZoom.latitude.toRadian())
     val y = (1 - log(latTan + latInvCos, E) / PI) / 2 * zoomPower
     return Coords(x, y)
 }

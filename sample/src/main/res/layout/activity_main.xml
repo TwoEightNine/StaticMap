@@ -49,24 +49,22 @@
                 android:text="update"
                 android:layout_height="wrap_content" />
 
-            <global.msnthrp.staticmap.view.StaticMapView
-                android:id="@+id/staticMap"
+            <ImageView
+                android:id="@+id/ivStaticMap"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/btnLoad"
-                app:pinIcon="@drawable/ic_pin"
-                app:cornerRadius="12dp"
                 android:layout_width="256dp"
                 android:layout_height="296dp"
                 android:layout_margin="16dp" />
 
             <RelativeLayout
                 android:id="@+id/rlLoader"
-                android:layout_alignTop="@+id/staticMap"
-                android:layout_alignBottom="@+id/staticMap"
-                android:layout_alignLeft="@+id/staticMap"
-                android:layout_alignStart="@+id/staticMap"
-                android:layout_alignRight="@+id/staticMap"
-                android:layout_alignEnd="@+id/staticMap"
+                android:layout_alignTop="@+id/ivStaticMap"
+                android:layout_alignBottom="@+id/ivStaticMap"
+                android:layout_alignLeft="@+id/ivStaticMap"
+                android:layout_alignStart="@+id/ivStaticMap"
+                android:layout_alignRight="@+id/ivStaticMap"
+                android:layout_alignEnd="@+id/ivStaticMap"
                 android:background="#8fff"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -83,7 +81,7 @@
                 android:id="@+id/btnZoomOut"
                 android:layout_margin="16dp"
                 android:layout_toLeftOf="@+id/vCenter"
-                android:layout_below="@+id/staticMap"
+                android:layout_below="@+id/ivStaticMap"
                 android:layout_width="wrap_content"
                 android:text="zoom out (-)"
                 android:layout_height="wrap_content"
@@ -93,7 +91,7 @@
                 android:id="@+id/btnZoomIn"
                 android:layout_margin="16dp"
                 android:layout_alignLeft="@+id/vCenter"
-                android:layout_below="@+id/staticMap"
+                android:layout_below="@+id/ivStaticMap"
                 android:layout_width="wrap_content"
                 android:text="zoom in (+)"
                 android:layout_height="wrap_content"

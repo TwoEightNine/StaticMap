@@ -2,6 +2,8 @@ package global.msnthrp.staticmap.utils
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.drawable.Drawable
+import androidx.core.graphics.drawable.toBitmap
 import global.msnthrp.staticmap.model.Coords
 
 /**
@@ -47,4 +49,21 @@ internal fun cropByOffset(bitmap: Bitmap, point: Coords): Bitmap {
         bitmap.width / 2,
         bitmap.height / 2
     )
+}
+
+/**
+ * draws pin to point center of bitmap
+ * @param bitmap bitmap to draw a pin on
+ * @param pinIcon what to draw
+ */
+internal fun drawPinIconOnBitmap(bitmap: Bitmap, pinIcon: Drawable) {
+    val pinBitmap = pinIcon.toBitmap()
+    Canvas(bitmap).apply {
+        drawBitmap(
+            pinBitmap,
+            (bitmap.width - pinBitmap.width) / 2f,
+            bitmap.height / 2f - pinBitmap.height,
+            null
+        )
+    }
 }

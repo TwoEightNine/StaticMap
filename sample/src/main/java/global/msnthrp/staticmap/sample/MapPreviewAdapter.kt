@@ -42,6 +42,7 @@ class MapPreviewAdapter(
             with(itemView) {
                 StaticMap.with(tileEssential)
                     .load(latLng)
+                    .clearBeforeLoading(true)
                     .into(ivStaticMapPreview)
             }
         }

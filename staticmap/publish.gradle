@@ -1,0 +1,40 @@
+apply plugin: 'com.jfrog.bintray'
+
+group 'com.twoeightnine.staticmap'
+version '0.1'
+
+project.ext {
+    mavGitUrl = 'https://github.com/TwoEightNine/StaticMap'
+    mavProjectName = 'StaticMap'
+    mavLibraryLicenses = ["MIT":'https://raw.githubusercontent.com/TwoEightNine/StaticMap/master/LICENSE']
+    mavLibraryDescription = "Android-library to show static pieces of map"
+    mavPublishToMavenLocal = true
+    mavSiteUrl = 'https://github.com/TwoEightNine/StaticMap'
+}
+
+def properties = new Properties()
+properties.load(new FileInputStream("local.properties"))
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    publications = ['Production']
+    configurations = ['archives']
+    override = true
+    pkg {
+        repo = 'maven'
+        name = 'StaticMap'
+        description = "Android-library to show static pieces of map"
+        publicDownloadNumbers = true
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/TwoEightNine/StaticMap'
+        version {
+            name = this.version
+            desc = "Version ${this.version}"
+            released = new Date()
+            vcsTag = this.version
+        }
+    }
+}
+
+apply from: 'https://raw.githubusercontent.com/sky-uk/gradle-maven-plugin/master/gradle-mavenizer.gradle'

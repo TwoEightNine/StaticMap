@@ -7,7 +7,14 @@ StaticMap API allows you to load a map right into `ImageView`.
 
 ### usage
 
-create preferred `TileLoader` and `TileProvider`
+add this dependency to your app-level `build.gradle`:
+
+```groovy
+implementation 'com.twoeightnine.staticmap:staticmap:0.1'
+```
+
+after sync is done create preferred `TileLoader` (loads image by url into bitmap) and 
+`TileProvider` (converts tile coordinates into tile url)
 
 ```kotlin
 private inner class CustomTileLoader : TileLoader {
